@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { TrustBadge } from './TrustBadge';
 import { RoofEstimator } from './RoofEstimator';
 
@@ -13,6 +14,18 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[calc(100vh-8rem)]">
           {/* Left Column - Copy */}
           <div className="space-y-8">
+            {/* Logo */}
+            <div className="mb-6">
+              <Image
+                src="/jtehlogo.jpg"
+                alt="JTech Solar-Pro Logo"
+                width={200}
+                height={80}
+                className="h-16 w-auto"
+                priority
+              />
+            </div>
+            
             <TrustBadge />
             
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#f8fafc] leading-[1.1]">

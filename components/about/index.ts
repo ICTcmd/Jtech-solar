@@ -1,0 +1,1 @@
+export { AboutOwner } from './AboutOwner';

@@ -40,7 +40,7 @@ export function RoofEstimator() {
     };
 
     const multiplier = data.roofOrientation ? orientationMultiplier[data.roofOrientation] : 0.85;
-    const annualUsageKwh = (data.monthlyBill / 0.13) * 12; // Assuming $0.13/kWh average
+    const annualUsageKwh = (data.monthlyBill / 6.5) * 12; // Assuming ₱6.5/kWh average in Philippines
     const systemSizeKw = (annualUsageKwh / 1400) * multiplier; // 1400 kWh per kW per year average
     const annualSavings = data.monthlyBill * 12;
     const savings25Year = annualSavings * 25 * 1.03; // Accounting for utility inflation
@@ -145,7 +145,7 @@ export function RoofEstimator() {
                   Average Monthly Utility Bill
                 </label>
                 <span className="text-2xl font-bold text-emerald-500">
-                  ${data.monthlyBill}
+                  ₱{data.monthlyBill}
                 </span>
               </div>
               <input
@@ -164,8 +164,8 @@ export function RoofEstimator() {
                 }}
               />
               <div className="flex justify-between text-xs text-slate-500 mt-1">
-                <span>$100</span>
-                <span>$800+</span>
+                <span>₱100</span>
+                <span>₱800+</span>
               </div>
             </div>
 
@@ -293,7 +293,7 @@ export function RoofEstimator() {
                   Estimated 25-Year Savings
                 </div>
                 <div className="text-4xl font-bold text-emerald-500">
-                  ${estimate.savings25Year.toLocaleString()}
+                  ₱{estimate.savings25Year.toLocaleString()}
                 </div>
                 <div className="text-xs text-slate-400 mt-2">
                   vs. rising utility rates
@@ -310,7 +310,7 @@ export function RoofEstimator() {
                 <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
                   <div className="text-xs text-slate-400 mb-1">Monthly Bill</div>
                   <div className="text-2xl font-bold text-[#f8fafc]">
-                    ${data.monthlyBill}
+                    ₱{data.monthlyBill}
                   </div>
                 </div>
               </div>
