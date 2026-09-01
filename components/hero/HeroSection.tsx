@@ -19,9 +19,9 @@ export function HeroSection() {
               <Image
                 src="/jtehlogo.jpg"
                 alt="JTech Solar-Pro Logo"
-                width={200}
-                height={80}
-                className="h-16 w-auto"
+                width={300}
+                height={120}
+                className="h-24 md:h-28 lg:h-32 w-auto"
                 priority
               />
             </div>

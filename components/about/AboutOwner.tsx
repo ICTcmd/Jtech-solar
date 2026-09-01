@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Play } from 'lucide-react';
+import { Play, Star } from 'lucide-react';
 
 export function AboutOwner() {
   return (
@@ -9,20 +9,20 @@ export function AboutOwner() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-[#f8fafc] mb-4">
-            Meet Your Solar Expert
+            Real Results, Real Reviews
           </h2>
           <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
-            Leading the solar revolution with expertise, passion, and a commitment to sustainable energy.
+            See what our satisfied customers say about their solar installations and energy savings.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Owner Photo */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-16">
+          {/* Customer Installation Photo */}
           <div className="relative">
             <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-emerald-500/20 shadow-2xl">
               <Image
                 src="/owner.jpg"
-                alt="JTech Solar-Pro Owner"
+                alt="Happy JTech Solar Customer Installation"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
@@ -36,7 +36,7 @@ export function AboutOwner() {
             <div className="absolute -top-4 -left-4 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl" />
           </div>
 
-          {/* Video Reels */}
+          {/* Customer Video Review */}
           <div className="space-y-6">
             <div className="backdrop-blur-md bg-slate-900/60 border border-slate-800 rounded-2xl p-6 md:p-8">
               <div className="flex items-center gap-3 mb-4">
@@ -44,8 +44,12 @@ export function AboutOwner() {
                   <Play className="w-6 h-6 text-emerald-500" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[#f8fafc]">Watch Our Story</h3>
-                  <p className="text-sm text-slate-400">See how we&apos;re changing lives with solar energy</p>
+                  <h3 className="text-xl font-semibold text-[#f8fafc]">Customer Success Story</h3>
+                  <div className="flex items-center gap-1 mt-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-emerald-500 text-emerald-500" />
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -60,6 +64,11 @@ export function AboutOwner() {
                   Your browser does not support the video tag.
                 </video>
               </div>
+
+              <p className="text-sm text-slate-300 mt-4">
+                Watch how our customer shares their experience with JTech Solar installation 
+                and the amazing energy savings they&apos;re enjoying.
+              </p>
             </div>
 
             {/* Quick Stats */}
@@ -93,6 +102,42 @@ export function AboutOwner() {
                   <div className="text-xs text-slate-400">Founder & CEO</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Installation Gallery */}
+        <div className="mt-16">
+          <h3 className="text-2xl md:text-3xl font-semibold text-[#f8fafc] mb-8 text-center">
+            Our Recent Installations
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="relative aspect-square rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-colors">
+              <Image
+                src="/aboutsolar.jpg"
+                alt="Solar panel installation"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 768px) 50vw, 33vw"
+              />
+            </div>
+            <div className="relative aspect-square rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-colors">
+              <Image
+                src="/aboutsolar1.jpg"
+                alt="Solar panel installation"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 768px) 50vw, 33vw"
+              />
+            </div>
+            <div className="relative aspect-square rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-colors">
+              <Image
+                src="/solar jtec reviews.jpg"
+                alt="Customer review and installation"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 768px) 50vw, 33vw"
+              />
             </div>
           </div>
         </div>
