@@ -1,13 +1,17 @@
 import { HeroSection } from '@/components/hero';
-import { EnergyVisualizer } from '@/components/energy';
 import { AboutOwner } from '@/components/about';
+import { EnergyVisualizer } from '@/components/energy';
+import { RateComparison } from '@/components/savings';
+import { HardwareGrid } from '@/components/hardware';
 
 export default function Home() {
   return (
     <main>
       <HeroSection />
-      <AboutOwner />
       <EnergyVisualizer />
+      <HardwareGrid />
+      <RateComparison />
+      <AboutOwner />
     </main>
   );
 }

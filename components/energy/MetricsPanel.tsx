@@ -1,137 +1,123 @@
 import React from 'react';
-import { Sun, Home, Battery, Zap, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Sun, Home, Battery, Zap, TrendingUp, TrendingDown, Minus, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 interface EnergyMetrics {
   solarProduction: number;
   homeConsumption: number;
   batteryLevel: number;
   batteryFlow: number;
-  gridStatus: 'exporting' | 'importing' | 'idle';
+  gridStatus: 'exporting' | 'importing' | 'idle' | 'outage';
   gridFlow: number;
 }
 
 interface MetricsPanelProps {
   mode: 'day' | 'night';
   metrics: EnergyMetrics;
+  outage?: boolean;
 }
 
-export function MetricsPanel({ mode, metrics }: MetricsPanelProps) {
-  const getGridStatusIcon = () => {
-    if (metrics.gridStatus === 'exporting') return <TrendingUp className="w-4 h-4" />;
-    if (metrics.gridStatus === 'importing') return <TrendingDown className="w-4 h-4" />;
-    return <Minus className="w-4 h-4" />;
-  };
-
-  const getGridStatusText = () => {
-    if (metrics.gridStatus === 'exporting') return 'Exporting';
-    if (metrics.gridStatus === 'importing') return 'Importing';
-    return 'Idle';
-  };
-
-  const getGridStatusColor = () => {
-    if (metrics.gridStatus === 'exporting') return 'text-emerald-500';
-    if (metrics.gridStatus === 'importing') return 'text-orange-500';
-    return 'text-slate-500';
-  };
-
+export function MetricsPanel({ mode, metrics, outage = false }: MetricsPanelProps) {
   return (
     <div className="mt-8 pt-8 border-t border-slate-700/50">
-      <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">
-        Live System Status
-      </h3>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {/* Solar Production */}
-        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 transition-all duration-500">
-          <div className="flex items-center gap-2 mb-2">
-            <Sun className={`w-5 h-5 ${mode === 'day' ? 'text-emerald-500' : 'text-slate-600'} transition-colors duration-500`} />
-            <span className="text-xs text-slate-400 font-medium">Solar</span>
-          </div>
-          <div className={`text-2xl font-bold ${mode === 'day' ? 'text-emerald-500' : 'text-slate-600'} transition-colors duration-500`}>
-            {metrics.solarProduction.toFixed(1)} kW
-          </div>
-          <div className="text-xs text-slate-500 mt-1">
-            {mode === 'day' ? 'Producing' : 'Offline'}
-          </div>
-        </div>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Live System Status</h3>
+        {outage && (
+          <span className="flex items-center gap-1.5 text-xs font-semibold text-red-400 bg-red-950/40 border border-red-800/50 px-3 py-1 rounded-full animate-pulse">
+            <AlertTriangle className="w-3 h-3" /> Grid Outage Active
+          </span>
+        )}
+      </div>
 
-        {/* Home Consumption */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Solar */}
         <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Home className="w-5 h-5 text-emerald-500" />
-            <span className="text-xs text-slate-400 font-medium">Home</span>
+            <Sun className={`w-4 h-4 ${mode === 'day' || outage ? 'text-emerald-500' : 'text-slate-600'} transition-colors duration-500`} />
+            <span className="text-xs text-slate-400 font-medium">Solar</span>
           </div>
-          <div className="text-2xl font-bold text-emerald-500">
-            {metrics.homeConsumption.toFixed(1)} kW
+          <div className={`text-2xl font-bold ${mode === 'day' || outage ? 'text-emerald-400' : 'text-slate-600'} transition-colors duration-500`}>
+            {metrics.solarProduction.toFixed(1)} kW
           </div>
-          <div className="text-xs text-slate-500 mt-1">
-            Using
-          </div>
+          <div className="text-xs text-slate-500 mt-1">{outage ? 'Trickling' : mode === 'day' ? 'Producing' : 'Offline'}</div>
         </div>
 
-        {/* Battery Status */}
-        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 transition-all duration-500">
+        {/* Home */}
+        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Battery className="w-5 h-5 text-emerald-500" />
+            <Home className="w-4 h-4 text-emerald-500" />
+            <span className="text-xs text-slate-400 font-medium">Home</span>
+          </div>
+          <div className="text-2xl font-bold text-emerald-400">{metrics.homeConsumption.toFixed(1)} kW</div>
+          <div className="text-xs text-slate-500 mt-1">{outage ? 'Essential Only' : 'Consuming'}</div>
+        </div>
+
+        {/* Battery */}
+        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Battery className={`w-4 h-4 ${outage ? 'text-emerald-400' : 'text-emerald-500'}`} />
             <span className="text-xs text-slate-400 font-medium">Battery</span>
           </div>
-          <div className="text-2xl font-bold text-emerald-500">
-            {metrics.batteryLevel}%
-          </div>
+          <div className="text-2xl font-bold text-emerald-400">{metrics.batteryLevel}%</div>
           <div className="flex items-center gap-1 text-xs mt-1">
             {metrics.batteryFlow > 0 ? (
-              <>
-                <TrendingUp className="w-3 h-3 text-emerald-500" />
-                <span className="text-emerald-500">Charging</span>
-              </>
+              <><TrendingUp className="w-3 h-3 text-emerald-500" /><span className="text-emerald-500">Charging</span></>
             ) : metrics.batteryFlow < 0 ? (
-              <>
-                <TrendingDown className="w-3 h-3 text-orange-500" />
-                <span className="text-orange-500">Discharging</span>
-              </>
+              <><TrendingDown className="w-3 h-3 text-orange-400" /><span className="text-orange-400">Discharging</span></>
             ) : (
-              <>
-                <Minus className="w-3 h-3 text-slate-500" />
-                <span className="text-slate-500">Idle</span>
-              </>
+              <><Minus className="w-3 h-3 text-slate-500" /><span className="text-slate-500">Idle</span></>
             )}
           </div>
         </div>
 
-        {/* Grid Status */}
-        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 transition-all duration-500">
+        {/* Grid */}
+        <div className={`rounded-xl p-4 border transition-all duration-500 ${
+          outage
+            ? 'bg-red-950/30 border-red-800/50'
+            : 'bg-slate-800/30 border-slate-700/50'
+        }`}>
           <div className="flex items-center gap-2 mb-2">
-            <Zap className={`w-5 h-5 ${mode === 'day' && metrics.gridStatus === 'exporting' ? 'text-emerald-500' : 'text-slate-600'} transition-colors duration-500`} />
+            <Zap className={`w-4 h-4 ${outage ? 'text-red-400' : mode === 'day' ? 'text-emerald-500' : 'text-slate-600'} transition-colors duration-500`} />
             <span className="text-xs text-slate-400 font-medium">Grid</span>
           </div>
-          <div className={`text-2xl font-bold ${mode === 'day' && metrics.gridStatus === 'exporting' ? 'text-emerald-500' : 'text-slate-600'} transition-colors duration-500`}>
-            {metrics.gridFlow.toFixed(1)} kW
+          <div className={`text-2xl font-bold ${outage ? 'text-red-400' : mode === 'day' ? 'text-emerald-400' : 'text-slate-600'} transition-colors duration-500`}>
+            {outage ? 'DOWN' : `${metrics.gridFlow.toFixed(1)} kW`}
           </div>
-          <div className={`flex items-center gap-1 text-xs mt-1 ${getGridStatusColor()} transition-colors duration-500`}>
-            {getGridStatusIcon()}
-            <span>{getGridStatusText()}</span>
+          <div className={`flex items-center gap-1 text-xs mt-1 ${outage ? 'text-red-400' : 'text-slate-500'}`}>
+            {outage ? (
+              <><AlertTriangle className="w-3 h-3" /><span>Outage</span></>
+            ) : mode === 'day' ? (
+              <><TrendingUp className="w-3 h-3" /><span>Exporting</span></>
+            ) : (
+              <><Minus className="w-3 h-3" /><span>Idle</span></>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Additional Info */}
-      <div className="mt-4 p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-lg">
+      {/* Status bar */}
+      <div className={`mt-4 p-4 rounded-xl border transition-all duration-500 ${
+        outage
+          ? 'bg-emerald-500/5 border-emerald-500/30'
+          : 'bg-emerald-500/5 border-emerald-500/20'
+      }`}>
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <Zap className="w-4 h-4 text-emerald-500" />
+          <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            {outage ? <ShieldCheck className="w-4 h-4 text-emerald-400" /> : <Zap className="w-4 h-4 text-emerald-500" />}
           </div>
           <div>
-            <p className="text-sm text-slate-200 font-medium mb-1">
-              {mode === 'day' 
-                ? '⚡ Peak Performance: Your system is producing more energy than you need'
-                : '🌙 Battery Powered: Running entirely on stored solar energy'
-              }
+            <p className="text-sm text-slate-200 font-medium mb-0.5">
+              {outage
+                ? '🛡️ Blackout Resilience Active — Your home is running on stored solar energy'
+                : mode === 'day'
+                  ? '⚡ Peak Performance — Producing more than you need'
+                  : '🌙 Battery Powered — Clean stored energy overnight'}
             </p>
             <p className="text-xs text-slate-400">
-              {mode === 'day'
-                ? 'Excess energy is being stored and exported to the grid for credits.'
-                : 'Your home stays powered through the night with clean stored energy.'
-              }
+              {outage
+                ? 'Grid isolated. Battery powering essential circuits at 0ms switchover. Neighborhood is dark — your home is bright.'
+                : mode === 'day'
+                  ? 'Excess energy stored in battery and exported to grid for credits.'
+                  : 'Zero grid dependency through the night with clean solar storage.'}
             </p>
           </div>
         </div>
